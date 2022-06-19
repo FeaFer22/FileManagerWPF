@@ -5,17 +5,12 @@ using FileManagerWPF.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation.Provider;
 using System.Windows.Data;
 using System.Windows.Input;
-using ThreadState = System.Threading.ThreadState;
 
 namespace FileManagerWPF.ViewModels
 {
@@ -373,18 +368,45 @@ namespace FileManagerWPF.ViewModels
 
         public string PathBack()
         {
-            if (_pathToItem.Length != 0)
+            try
             {
-                if ()
+                if (PathToItem != null)
                 {
-                    
+                    if (PathToItem[^1] != '\\')
+                    {
+                        while (PathToItem[^1] != '\\')
+                        {
+                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
+                        }
+
+                        while (PathToItem[^1] != '\\' && PathToItem[^2] != ':')
+                        {
+                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
+                        }
+
+                        if (PathToItem[^1] == '\\' && PathToItem[^2] != ':')
+                        {
+                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
+                        }
+                    }
+                    else if (PathToItem[^1] == '\\' && PathToItem[^2] == ':')
+                    {
+                        PathToItem = "";
+                    }
+                    GetItemsInfoFromPath(PathToItem);
                 }
                 else
                 {
+                    _itemsInfo.Clear();
                     GetLogicalDrivesInfo();
                 }
             }
-            return GetItemsInfoFromPath(_pathToItem);
+            catch (ArgumentException)
+            {
+                GetLogicalDrivesInfo();
+            }
+            
+            return PathToItem = _pathToItem;
         }
 
         #endregion
