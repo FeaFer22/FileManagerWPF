@@ -1,3 +1,4 @@
+using FileManagerWPF.Models;
 using FileManagerWPF.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -44,6 +45,15 @@ namespace FileManagerMSTestTests
             ExpectedString = "C:\\Test";
             mainWindowViewModel = new MainWindowViewModel();
             ActualString = mainWindowViewModel.GetItemsInfoFromPath("C:\\Test");
+            Assert.AreEqual(ExpectedString, ActualString);
+        }
+        
+        [TestMethod]
+        public void PathBack_To_PrevLocation()
+        {
+            ExpectedString = "C:\\";
+            mainWindowViewModel = new MainWindowViewModel();
+            ActualString = mainWindowViewModel.PathBack("C:\\Test");
             Assert.AreEqual(ExpectedString, ActualString);
         }
     }

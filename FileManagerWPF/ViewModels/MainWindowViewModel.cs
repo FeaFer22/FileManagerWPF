@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Automation.Provider;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -171,7 +170,7 @@ namespace FileManagerWPF.ViewModels
 
         private void OnPathBackCommandExecuted(object obj)
         {
-            PathBack();
+            PathBack(PathToItem);
         }
 
         #endregion
@@ -322,7 +321,7 @@ namespace FileManagerWPF.ViewModels
             catch (UnauthorizedAccessException unauthorizedAccess)
             {
                 MessageBox.Show(unauthorizedAccess.Message, _title);
-                GetItemsInfoFromPath(PathBack());
+                GetItemsInfoFromPath(PathBack(PathToItem));
             }
 
             return path;
@@ -332,7 +331,7 @@ namespace FileManagerWPF.ViewModels
 
         #region OpenSelectedItem
 
-        private void OpenSelectedItem(object parameter)
+        public void OpenSelectedItem(object parameter)
         {
             if (parameter is Item item)
             {
@@ -366,34 +365,34 @@ namespace FileManagerWPF.ViewModels
 
         #region PathBack
 
-        public string PathBack()
+        public string PathBack(string path)
         {
             try
             {
-                if (PathToItem != null)
+                if (path != null)
                 {
-                    if (PathToItem[^1] != '\\')
+                    if (path[^1] != '\\')
                     {
-                        while (PathToItem[^1] != '\\')
+                        while (path[^1] != '\\')
                         {
-                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
+                            path = path.Remove(path.Length - 1, 1);
                         }
 
-                        while (PathToItem[^1] != '\\' && PathToItem[^2] != ':')
+                        while (path[^1] != '\\' && path[^2] != ':')
                         {
-                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
+                            path = path.Remove(path.Length - 1, 1);
                         }
 
-                        if (PathToItem[^1] == '\\' && PathToItem[^2] != ':')
+                        if (path[^1] == '\\' && path[^2] != ':')
                         {
-                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
+                            path = path.Remove(path.Length - 1, 1);
                         }
                     }
-                    else if (PathToItem[^1] == '\\' && PathToItem[^2] == ':')
+                    else if (path[^1] == '\\' && path[^2] == ':')
                     {
-                        PathToItem = "";
+                        path = "";
                     }
-                    GetItemsInfoFromPath(PathToItem);
+                    GetItemsInfoFromPath(path);
                 }
                 else
                 {
@@ -405,8 +404,8 @@ namespace FileManagerWPF.ViewModels
             {
                 GetLogicalDrivesInfo();
             }
-            
-            return PathToItem = _pathToItem;
+
+            return path;
         }
 
         #endregion
