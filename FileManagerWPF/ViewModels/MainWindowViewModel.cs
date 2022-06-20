@@ -369,30 +369,30 @@ namespace FileManagerWPF.ViewModels
         {
             try
             {
-                if (path != null)
+                if (PathToItem != null)
                 {
-                    if (path[^1] != '\\')
+                    if (PathToItem[^1] != '\\')
                     {
-                        while (path[^1] != '\\')
+                        while (PathToItem[^1] != '\\')
                         {
-                            path = path.Remove(path.Length - 1, 1);
+                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
                         }
 
-                        while (path[^1] != '\\' && path[^2] != ':')
+                        while (PathToItem[^1] != '\\' && PathToItem[^2] != ':')
                         {
-                            path = path.Remove(path.Length - 1, 1);
+                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
                         }
 
-                        if (path[^1] == '\\' && path[^2] != ':')
+                        if (PathToItem[^1] == '\\' && PathToItem[^2] != ':')
                         {
-                            path = path.Remove(path.Length - 1, 1);
+                            PathToItem = PathToItem.Remove(PathToItem.Length - 1, 1);
                         }
                     }
-                    else if (path[^1] == '\\' && path[^2] == ':')
+                    else if (PathToItem[^1] == '\\' && PathToItem[^2] == ':')
                     {
-                        path = "";
+                        PathToItem = "";
                     }
-                    GetItemsInfoFromPath(path);
+                    GetItemsInfoFromPath(PathToItem);
                 }
                 else
                 {
@@ -405,7 +405,7 @@ namespace FileManagerWPF.ViewModels
                 GetLogicalDrivesInfo();
             }
 
-            return path;
+            return path = PathToItem;
         }
 
         #endregion

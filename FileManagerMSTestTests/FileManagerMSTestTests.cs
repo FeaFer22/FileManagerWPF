@@ -40,21 +40,40 @@ namespace FileManagerMSTestTests
         }
 
         [TestMethod]
-        public void Open_TestFolder()
+        public void Open_Folder()
+        {
+            ExpectedString = "C:\\";
+            mainWindowViewModel = new MainWindowViewModel();
+            ActualString = mainWindowViewModel.GetItemsInfoFromPath("C:\\");
+            Assert.AreEqual(ExpectedString, ActualString);
+        }
+
+        [TestMethod]
+        public void Open_Test_Folder_1st_lvl()
         {
             ExpectedString = "C:\\Test";
             mainWindowViewModel = new MainWindowViewModel();
             ActualString = mainWindowViewModel.GetItemsInfoFromPath("C:\\Test");
             Assert.AreEqual(ExpectedString, ActualString);
         }
-        
+
         [TestMethod]
-        public void PathBack_To_PrevLocation()
+        public void Open_Test_Folder_2nd_lvl()
         {
-            ExpectedString = "C:\\";
+            ExpectedString = "C:\\Test\\test";
             mainWindowViewModel = new MainWindowViewModel();
-            ActualString = mainWindowViewModel.PathBack("C:\\Test");
+            ActualString = mainWindowViewModel.GetItemsInfoFromPath("C:\\Test\\test");
             Assert.AreEqual(ExpectedString, ActualString);
         }
+
+        [TestMethod]
+        public void Open_Test_Folder_3nd_lvl()
+        {
+            ExpectedString = "C:\\Test\\test2\\test2.2";
+            mainWindowViewModel = new MainWindowViewModel();
+            ActualString = mainWindowViewModel.GetItemsInfoFromPath("C:\\Test\\test2\\test2.2");
+            Assert.AreEqual(ExpectedString, ActualString);
+        }
+
     }
 }
